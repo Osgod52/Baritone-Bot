@@ -12,19 +12,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
-/**
- * A tabbed control panel for Baritone. Every button on every tab ultimately
- * calls BaritoneCommandSender.send(...), which just sends the equivalent
- * "#command" chat line - nothing here talks to Baritone's Java API.
- * <p>
- * Layout is designed at a fixed "base" size (BASE_PANEL_WIDTH x
- * BASE_PANEL_HEIGHT, as if scale == 1) and then every coordinate is passed
- * through x()/y()/s() to convert it into real pixels for whatever "scale"
- * ends up being. This keeps the whole panel - and everything inside it -
- * shrinking together so it always fits the screen's actual GUI space, which
- * can be much smaller than the window resolution suggests if the player has
- * a high GUI Scale set (Options > Video Settings).
- */
 public class BaritoneUIScreen extends Screen {
 
     private enum Tab {
@@ -39,13 +26,9 @@ public class BaritoneUIScreen extends Screen {
         Tab(String label) { this.label = label; }
     }
 
-    // Keeps the last commands visible even after closing/reopening the screen.
     private static final LinkedList<String> HISTORY = new LinkedList<>();
     private static final int HISTORY_MAX = 4;
 
-    // Design-time layout size at scale == 1. Every number used below in
-    // buildTabContent()/init() is expressed relative to this box, then run
-    // through x()/y()/s() to get real, on-screen pixels.
     private static final int BASE_PANEL_WIDTH = 360;
     private static final int BASE_PANEL_HEIGHT = 300;
 
@@ -55,7 +38,6 @@ public class BaritoneUIScreen extends Screen {
     private int panelWidth, panelHeight;
     private int panelX, panelY;
 
-    // Text fields kept as fields so we can read them across renders.
     private EditBox gotoX, gotoY, gotoZ;
     private EditBox followEntity;
     private EditBox thiswayDistance;
@@ -68,7 +50,6 @@ public class BaritoneUIScreen extends Screen {
     private EditBox consoleInput;
 
     private final List<EditBox> activeFields = new ArrayList<>();
-    // Widgets created per-tab that need to be torn down on tab switch.
     private final List<AbstractWidget> rebuildable = new ArrayList<>();
 
     public BaritoneUIScreen() {
@@ -77,15 +58,11 @@ public class BaritoneUIScreen extends Screen {
 
     @Override
     protected void init() {
-        // Shrink the whole panel to fit whatever GUI space is actually
-        // available. On a normal setup this is 1.0 (no shrinking at all).
+
         int margin = 20;
         float scaleW = (this.width - margin) / (float) BASE_PANEL_WIDTH;
         float scaleH = (this.height - margin) / (float) BASE_PANEL_HEIGHT;
         scale = Math.min(1f, Math.min(scaleW, scaleH));
-        // Don't shrink so far that text/buttons become unusable. If your
-        // screen genuinely can't fit even this, lower Minecraft's GUI Scale
-        // (Options > Video Settings > GUI Scale) for more room.
         scale = Math.max(scale, 0.5f);
 
         panelWidth = Math.round(BASE_PANEL_WIDTH * scale);
@@ -93,7 +70,6 @@ public class BaritoneUIScreen extends Screen {
         panelX = (this.width - panelWidth) / 2;
         panelY = (this.height - panelHeight) / 2;
 
-        // --- Tab bar ---
         int tabCount = Tab.values().length;
         int tabWidthBase = BASE_PANEL_WIDTH / tabCount;
         int txBase = 0;
@@ -105,7 +81,6 @@ public class BaritoneUIScreen extends Screen {
             txBase += tabWidthBase;
         }
 
-        // --- Global controls (always visible, bottom of panel) ---
         int bottomYBase = BASE_PANEL_HEIGHT - 24;
         this.addRenderableWidget(Button.builder(Component.literal("Pause"), b -> send("pause"))
                 .bounds(x(0), y(bottomYBase), s(80), s(20)).build());
@@ -119,14 +94,12 @@ public class BaritoneUIScreen extends Screen {
         buildTabContent();
     }
 
-    // --- base-unit -> real-pixel conversion -------------------------------
     private int x(int baseOffsetFromPanel) { return panelX + Math.round(baseOffsetFromPanel * scale); }
     private int y(int baseOffsetFromPanel) { return panelY + Math.round(baseOffsetFromPanel * scale); }
     private int s(int baseSize) { return Math.max(1, Math.round(baseSize * scale)); }
 
     private void switchTab(Tab tab) {
         this.currentTab = tab;
-        // Remove old dynamic widgets and rebuild for the new tab.
         for (EditBox box : activeFields) this.removeWidget(box);
         activeFields.clear();
         rebuildable.forEach(this::removeWidget);
@@ -140,16 +113,6 @@ public class BaritoneUIScreen extends Screen {
         return widget;
     }
 
-    /**
-     * xBase/yBase/wBase are in the same base units as everything else in
-     * buildTabContent() - they get converted to real pixels here.
-     * <p>
-     * NOTE: vanilla EditBox does not clip hint text to the box's width - a
-     * hint longer than the box just overflows visually into whatever is
-     * drawn to its right. Keep hints short enough to actually fit inside
-     * width {@code wBase} (roughly wBase/7 characters), or widen the box /
-     * move the next widget further right.
-     */
     private EditBox field(int xBase, int yBase, int wBase, String hint) {
         EditBox box = new EditBox(this.font, x(xBase), y(yBase), s(wBase), s(18), Component.literal(hint));
         box.setHint(Component.literal(hint));
@@ -159,15 +122,14 @@ public class BaritoneUIScreen extends Screen {
         return box;
     }
 
-    /** Shorthand for a button whose bounds are given in base units. */
     private Button.Builder btn(String label, Button.OnPress onPress, int xBase, int yBase, int wBase, int hBase) {
         return Button.builder(Component.literal(label), onPress)
                 .bounds(x(xBase), y(yBase), s(wBase), s(hBase));
     }
 
     private void buildTabContent() {
-        int contentY = 26; // base-unit offset from panel top
-        int col1 = 8;      // base-unit offset from panel left
+        int contentY = 26;
+        int col1 = 8;
 
         switch (currentTab) {
             case MOVEMENT -> {
