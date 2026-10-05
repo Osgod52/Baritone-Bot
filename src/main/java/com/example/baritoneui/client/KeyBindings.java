@@ -13,7 +13,6 @@ public final class KeyBindings {
             Identifier.fromNamespaceAndPath(BaritoneUIMod.MOD_ID, "main")
     );
 
-    // Default: B (change here if it clashes with something on your setup)
     public static final KeyMapping OPEN_UI = new KeyMapping(
             "key.baritoneui.open",
             InputConstants.Type.KEYSYM,
@@ -23,7 +22,6 @@ public final class KeyBindings {
 
     private KeyBindings() {}
 
-    /** Called once per client tick from ClientSetup to detect the keypress. */
     public static void tick() {
         Minecraft mc = Minecraft.getInstance();
         while (OPEN_UI.consumeClick()) {
