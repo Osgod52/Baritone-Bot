@@ -1,0 +1,27 @@
+{
+	"schemaVersion": 1,
+	"id": "baritoneui",
+	"version": "${version}",
+	"name": "Baritone UI",
+	"description": "A graphical, tabbed control panel for driving Baritone without typing chat commands by hand. Bundles Baritone (LGPL-3.0) via jar-in-jar.",
+	"authors": [
+		"You"
+	],
+	"contact": {
+		"sources": "https://github.com/cabaletta/baritone"
+	},
+	"license": "MIT",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"com.example.baritoneui.BaritoneUIMod"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.17.0",
+		"minecraft": "~1.21.11",
+		"java": ">=21",
+		"fabric-api": "*",
+		"baritone": ">=1.17.0"
+	}
+}
