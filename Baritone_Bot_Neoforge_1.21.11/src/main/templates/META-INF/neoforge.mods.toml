@@ -1,0 +1,35 @@
+modLoader="javafml"
+loaderVersion="[4,)"
+license="${mod_license}"
+
+[[mods]]
+modId="${mod_id}"
+version="${mod_version}"
+displayName="${mod_name}"
+authors="${mod_authors}"
+description='''
+Adds a graphical, tabbed control panel for driving the Baritone mod without typing chat commands by hand.
+Bundles Baritone (LGPL-3.0) via jar-in-jar.
+'''
+
+[[dependencies.${mod_id}]]
+    modId="neoforge"
+    type="required"
+    versionRange="[${neo_version},)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    type="required"
+    versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+# Baritone's real mod id is "baritoe" (sic). Satisfied by the bundled jar-in-jar copy.
+[[dependencies.${mod_id}]]
+    modId="baritoe"
+    type="required"
+    versionRange="[${baritone_version},)"
+    ordering="NONE"
+    side="CLIENT"
