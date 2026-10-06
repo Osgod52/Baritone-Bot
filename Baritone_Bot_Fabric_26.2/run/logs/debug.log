@@ -1,0 +1,25 @@
+[03:25:09] [main/INFO] (FabricLoader/GameProvider) Loading Minecraft 26.2 with Fabric Loader 0.19.3
+[03:25:09] [main/INFO] (FabricLoader/Mappings) Mappings not present!
+[03:25:09] [main/DEBUG] (FabricLoader/GamePatch) Found game constructor: net.minecraft.client.main.Main -> net.minecraft.client.Minecraft
+[03:25:09] [main/DEBUG] (FabricLoader/GamePatch) Patching game constructor <init>(Lnet/minecraft/client/main/GameConfig;)V
+[03:25:09] [main/DEBUG] (FabricLoader/GamePatch) Run directory field is thought to be net/minecraft/client/Minecraft/gameDirectory
+[03:25:09] [main/DEBUG] (FabricLoader/GamePatch) Applying brand name hook to net/minecraft/client/ClientBrandRetriever::getClientModName
+[03:25:09] [main/DEBUG] (FabricLoader/GamePatch) Applying brand name hook to net/minecraft/server/MinecraftServer::getServerModName
+[03:25:09] [main/DEBUG] (FabricLoader/GamePatch) Patched 3 classs
+[03:25:09] [main/DEBUG] (FabricLoader/Discovery) Mod discovery time: 23.3 ms
+[03:25:09] [main/WARN] (FabricLoader/Resolution) Mod resolution failed
+[03:25:09] [main/INFO] (FabricLoader/Resolution) Immediate reason: [HARD_DEP_NO_CANDIDATE baritoneui 1.0.0 {depends fabric-api @ [>=0.158.0]}, ROOT_FORCELOAD_SINGLE baritoneui 1.0.0]
+[03:25:09] [main/INFO] (FabricLoader/Resolution) Reason: [HARD_DEP baritoneui 1.0.0 {depends fabric-api @ [>=0.158.0]}]
+[03:25:09] [main/INFO] (FabricLoader/Resolution) Fix: add [], remove [], replace [[fabric-api 0.155.2+26.2] -> add:fabric-api 0.158.0 ([[0.158.0,∞)])]
+[03:25:09] [main/ERROR] (FabricLoader) Incompatible mods found!
+net.fabricmc.loader.impl.FormattedException: Some of your mods are incompatible with the game or each other!
+A potential solution has been determined, this may resolve your problem:
+	 - Replace mod 'Fabric API' (fabric-api) 0.155.2+26.2 with version 0.158.0 or later.
+More details:
+	 - Mod 'Baritone UI' (baritoneui) 1.0.0 requires version 0.158.0 or later of mod 'Fabric API' (fabric-api), but only the wrong version is present: 0.155.2+26.2!
+	at net.fabricmc.loader.impl.FormattedException.ofLocalized(FormattedException.java:51)
+	at net.fabricmc.loader.impl.FabricLoaderImpl.load(FabricLoaderImpl.java:202)
+	at net.fabricmc.loader.impl.launch.knot.Knot.init(Knot.java:142)
+	at net.fabricmc.loader.impl.launch.knot.Knot.launch(Knot.java:66)
+	at net.fabricmc.loader.impl.launch.knot.KnotClient.main(KnotClient.java:23)
+	at net.fabricmc.devlaunchinjector.Main.main(Main.java:86)
