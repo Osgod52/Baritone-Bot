@@ -1,0 +1,80 @@
+buildscript {
+    repositories {
+        maven { url = 'https://maven.minecraftforge.net' }
+        mavenCentral()
+    }
+
+    dependencies {
+        classpath group: 'net.minecraftforge.gradle',
+                name: 'ForgeGradle',
+                version: '3.+',
+                changing: true
+    }
+}
+
+repositories {
+    maven { url = 'https://maven.minecraftforge.net/' }
+    maven { url = 'https://libraries.minecraft.net/' }
+    mavenCentral()
+    flatDir { dirs 'libs' }
+}
+
+apply plugin: 'net.minecraftforge.gradle'
+
+version = '1.0.0'
+group = 'com.example.baritoneui'
+archivesBaseName = 'baritoneui-forge-1.16.5'
+
+sourceCompatibility = targetCompatibility = '1.8'
+
+compileJava {
+    sourceCompatibility = targetCompatibility = '1.8'
+}
+
+minecraft {
+    mappings channel: 'official', version: '1.16.5'
+
+    runs {
+        client {
+            workingDirectory project.file('run')
+
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                baritoneui {
+                    source sourceSets.main
+                }
+            }
+        }
+    }
+}
+
+configurations {
+    shade
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:1.16.5-36.2.39'
+
+    shade name: 'baritone-api-forge-1.6.5'
+}
+
+jar {
+    from({ configurations.shade.collect { zipTree(it) } }) {
+        exclude 'META-INF/mods.toml'
+        exclude 'META-INF/MANIFEST.MF'
+        exclude 'META-INF/*.SF'
+        exclude 'META-INF/*.DSA'
+        exclude 'META-INF/*.RSA'
+    }
+
+    manifest {
+        attributes(
+                'MixinConfigs': 'mixins.baritone.json',
+                'MixinConnector': 'baritone.launch.BaritoneMixinConnector'
+        )
+    }
+
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}

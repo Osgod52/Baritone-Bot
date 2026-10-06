@@ -1,0 +1,49 @@
+modLoader="javafml"
+loaderVersion="[36,)"
+license="MIT"
+
+[[mods]]
+modId="baritoneui"
+version="1.0.0"
+displayName="Baritone UI"
+authors="You"
+description='''
+Adds a graphical, tabbed control panel for driving the Baritone mod without typing chat commands by hand.
+'''
+
+[[mods]]
+modId="baritoe"
+version="1.6.5"
+displayName="Baritone"
+authors="leijurv, Brady"
+description='''
+A Minecraft pathfinder bot.
+'''
+
+[[dependencies.baritoneui]]
+modId="forge"
+mandatory=true
+versionRange="[36,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.baritoneui]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.16.5,1.17)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.baritoe]]
+modId="forge"
+mandatory=true
+versionRange="[33,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.baritoe]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.16.5,1.17)"
+ordering="NONE"
+side="BOTH"
