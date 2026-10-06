@@ -1,0 +1,16 @@
+{
+  "jars": [
+    {
+      "identifier": {
+        "group": "",
+        "artifact": "baritone-standalone-neoforge"
+      },
+      "version": {
+        "range": "[1.11.2,)",
+        "artifactVersion": "1.11.2"
+      },
+      "path": "META-INF/jarjar/baritone-standalone-neoforge-1.11.2.jar",
+      "isObfuscated": false
+    }
+  ]
+}
