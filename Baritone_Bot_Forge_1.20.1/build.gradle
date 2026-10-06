@@ -1,0 +1,99 @@
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'maven-publish'
+    id 'net.minecraftforge.gradle' version '[6.0.16,6.2)'
+}
+
+version = mod_version
+group = mod_group_id
+
+base {
+    archivesName = mod_id
+}
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+
+minecraft {
+    mappings channel: mapping_channel, version: mapping_version
+
+    copyIdeResources = true
+
+    runs {
+        configureEach {
+            workingDirectory project.file('run')
+            property 'forge.logging.markers', 'REGISTRIES'
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        client {
+            
+            
+            
+        }
+    }
+}
+
+
+
+
+
+jarJar.enable()
+
+repositories {
+    maven {
+        name = 'LocalBundled'
+        url = uri("${projectDir}/local-maven")
+        content {
+            includeGroup 'local.baritone'
+        }
+    }
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    
+    
+    jarJar(group: 'local.baritone', name: 'baritone-standalone-forge', version: '[1.10.5,1.11)') {
+        jarJar.pin(it, project.baritone_version)
+    }
+}
+
+tasks.named('jar', Jar).configure {
+    archiveClassifier = 'slim'      
+    manifest {
+        attributes([
+                'Specification-Title'   : mod_id,
+                'Specification-Vendor'  : 'You',
+                'Specification-Version' : '1',
+                'Implementation-Title'  : project.name,
+                'Implementation-Version': project.jar.archiveVersion,
+                'Implementation-Vendor' : 'You'
+        ])
+    }
+    finalizedBy 'reobfJar'
+}
+
+tasks.named('jarJar').configure {
+    archiveClassifier = ''          
+    finalizedBy 'reobfJarJar'
+}
+
+reobf {
+    jarJar { }
+}
+
+tasks.named('assemble').configure {
+    dependsOn 'jarJar'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}

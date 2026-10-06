@@ -1,0 +1,36 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="MIT"
+
+[[mods]]
+modId="baritoneui"
+version="1.0.0"
+displayName="Baritone UI"
+authors="You"
+displayTest="IGNORE_SERVER_VERSION"
+description='''
+Adds a graphical, tabbed control panel for driving the Baritone mod without typing chat commands by hand.
+Bundles Baritone (LGPL-3.0) via jar-in-jar.
+'''
+
+[[dependencies.baritoneui]]
+modId="forge"
+mandatory=true
+versionRange="[47,)"
+ordering="NONE"
+side="BOTH"
+
+[[dependencies.baritoneui]]
+modId="minecraft"
+mandatory=true
+versionRange="[1.20.1,1.21)"
+ordering="NONE"
+side="BOTH"
+
+# Baritone's real Forge mod id is "baritoe" (sic). Satisfied by the bundled copy.
+[[dependencies.baritoneui]]
+modId="baritoe"
+mandatory=true
+versionRange="[1.10.5,)"
+ordering="NONE"
+side="CLIENT"
